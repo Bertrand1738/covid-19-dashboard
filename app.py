@@ -250,7 +250,7 @@ elif page == "Country Analysis":
         # Per million comparison
         st.subheader("Per Million Population Metrics")
         
-        per_million_metrics = ['casesPerOneMillion', 'deathsPer1M', 'testsPer1M']
+        per_million_metrics = ['casesPerOneMillion', 'casesPerOneMillion', 'testsPer1M']
         per_million_labels = ['Cases per Million', 'Deaths per Million', 'Tests per Million']
         
         # Create tabs for different per million metrics
@@ -300,14 +300,14 @@ elif page == "Country Analysis":
     # Select metric for map
     map_metric = st.selectbox(
         "Select metric to visualize:",
-        options=['cases', 'deaths', 'recovered', 'active', 'casesPerOneMillion', 'deathsPer1M', 'recoveryRate', 'fatalityRate'],
+        options=['cases', 'deaths', 'recovered', 'active', 'casesPerOneMillion', 'casesPerOneMillion', 'recoveryRate', 'fatalityRate'],
         format_func=lambda x: {
             'cases': 'Total Cases',
             'deaths': 'Total Deaths',
             'recovered': 'Total Recovered',
             'active': 'Active Cases',
             'casesPerOneMillion': 'Cases per Million',
-            'deathsPer1M': 'Deaths per Million',
+            'casesPerOneMillion': 'Deaths per Million',
             'recoveryRate': 'Recovery Rate (%)',
             'fatalityRate': 'Fatality Rate (%)'
         }[x]
@@ -345,7 +345,7 @@ elif page == "Country Analysis":
     fig = px.scatter(
         clustered_countries.dropna(subset=['cluster']),
         x='casesPerOneMillion',
-        y='deathsPer1M',
+        y='casesPerOneMillion',
         color='cluster',
         hover_name='country',
         size='cases',
@@ -353,7 +353,7 @@ elif page == "Country Analysis":
         title='Country Clusters based on Cases and Deaths per Million',
         labels={
             'casesPerOneMillion': 'Cases per Million',
-            'deathsPer1M': 'Deaths per Million',
+            'casesPerOneMillion': 'Deaths per Million',
             'cluster': 'Cluster'
         }
     )
@@ -372,7 +372,7 @@ elif page == "Country Analysis":
         # Calculate cluster averages
         cluster_stats = clustered_countries.groupby('cluster').agg({
             'casesPerOneMillion': 'mean',
-            'deathsPer1M': 'mean',
+            'casesPerOneMillion': 'mean',
             'recoveryRate': 'mean',
             'fatalityRate': 'mean',
             'country': 'count'
@@ -381,7 +381,7 @@ elif page == "Country Analysis":
         # Display cluster statistics
         st.dataframe(cluster_stats.style.format({
             'casesPerOneMillion': '{:.2f}',
-            'deathsPer1M': '{:.2f}',
+            'casesPerOneMillion': '{:.2f}',
             'recoveryRate': '{:.2f}',
             'fatalityRate': '{:.2f}',
             'count': '{:.0f}'
@@ -398,12 +398,12 @@ elif page == "Country Analysis":
                 cluster_countries = clustered_countries[clustered_countries['cluster'] == i]
                 st.write(f"**Number of countries:** {len(cluster_countries)}")
                 st.dataframe(
-                    cluster_countries[['country', 'casesPerOneMillion', 'deathsPer1M', 'recoveryRate', 'fatalityRate']]
+                    cluster_countries[['country', 'casesPerOneMillion', 'casesPerOneMillion', 'recoveryRate', 'fatalityRate']]
                     .sort_values('casesPerOneMillion', ascending=False)
                     .reset_index(drop=True)
                     .style.format({
                         'casesPerOneMillion': '{:.2f}',
-                        'deathsPer1M': '{:.2f}',
+                        'casesPerOneMillion': '{:.2f}',
                         'recoveryRate': '{:.2f}',
                         'fatalityRate': '{:.2f}'
                     })
@@ -641,7 +641,7 @@ elif page == "AI Insights":
     # Calculate risk score based on multiple factors
     countries_data['risk_score'] = (
         countries_data['casesPerOneMillion'] / countries_data['casesPerOneMillion'].max() * 0.4 +
-        countries_data['deathsPer1M'] / countries_data['deathsPer1M'].max() * 0.4 +
+        countries_data['casesPerOneMillion'] / countries_data['casesPerOneMillion'].max() * 0.4 +
         (1 - countries_data['recoveryRate'] / 100) * 0.2
     )
     
@@ -683,12 +683,12 @@ elif page == "AI Insights":
     if not high_risk.empty:
         st.subheader("Top 10 Highest Risk Countries")
         st.dataframe(
-            high_risk[['country', 'casesPerOneMillion', 'deathsPer1M', 'recoveryRate', 'risk_score']]
+            high_risk[['country', 'casesPerOneMillion', 'casesPerOneMillion', 'recoveryRate', 'risk_score']]
             .head(10)
             .reset_index(drop=True)
             .style.format({
                 'casesPerOneMillion': '{:.2f}',
-                'deathsPer1M': '{:.2f}',
+                'casesPerOneMillion': '{:.2f}',
                 'recoveryRate': '{:.2f}',
                 'risk_score': '{:.4f}'
             })
